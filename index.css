@@ -1,0 +1,15 @@
+* {
+    font-family: 'Cardo', serif;
+}
+
+h1 {
+    font-size: 72px
+}
+
+test {
+    border: 1px solid red;
+}
+
+body {
+    background-color: #FFF1E0;
+}
