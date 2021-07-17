@@ -18,8 +18,12 @@ body {
     background-color: #FFF9F5;
 }
 
+#container {
+    height: 100px;
+}
+
 #render {
-    width: 750px;
+    width: 100%;
     height: 425px;
     /* border: 1px solid black; */
 }

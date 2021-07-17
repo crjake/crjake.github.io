@@ -3,20 +3,31 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
 
 import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 
 function main() {
     const canvas = document.querySelector('#render');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, });
+
+    // var container = document.getElementById('container');
+    // renderer.setSize($(container).width(), $(container).height());
+    // container.appendChild(renderer.domElement);
+
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMapSoft = true;
+
+
     renderer.setPixelRatio(window.devicePixelRatio * 3);
     const fov = 75;
     // const aspect = 2;
     const aspect = window.innerWidth / window.innerHeight;
+    // const aspect = 750 / 245;
     // the canvas default 
     const near = 0.1;
-    const far = 5;
+    const far = 50;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.z = 1.5;
-    camera.position.y = 1.2;
+    camera.position.y = 1.5;
 
     const scene = new THREE.Scene();
 
@@ -26,18 +37,43 @@ function main() {
         const light = new THREE.DirectionalLight(color, intensity);
         light.position.set(-1, 2, 4);
         scene.add(light);
+
+        light.castShadow = true;
+
+        light.shadow.mapSize.width = 2048;
+        light.shadow.mapSize.height = 2048;
+
+        const d = 150;
+
+        light.shadow.camera.left = -d;
+        light.shadow.camera.right = d;
+        light.shadow.camera.top = d;
+        light.shadow.camera.bottom = -d;
+
+        light.shadow.camera.far = 3500;
+        light.shadow.bias = -0.0001;
     }
 
-    const boxWidth = 1;
-    const boxHeight = 1;
-    const boxDepth = 1;
-    const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+    // Plane
+    const gridLength = 0.5;
+    const gridSquares = 8;
+    const height = 0.5;
 
-    const material = new THREE.MeshPhongMaterial({ color: 0x52307c });
+    // const gridHelper = new THREE.GridHelper(gridLength * gridSquares, gridSquares);
+    // scene.add(gridHelper);
 
-    const cube = new THREE.Mesh(geometry, material);
-
-    // scene.add(cube);
+    {
+        // Add 1 to the dimensions to stop models from clipping / bugging when they are slightly bigger than the grid square
+        const geometry = new THREE.BoxGeometry(gridLength * gridSquares, height, gridLength * gridSquares);
+        const material = new THREE.MeshPhongMaterial({ color: 0x545454, side: THREE.DoubleSide });
+        // const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        const plane = new THREE.Mesh(geometry, material);
+        plane.receiveShadow = true;
+        plane.castShadow = true;
+        plane.position.set(0, -height / 2, 0);
+        // plane.rotateX(-Math.PI / 2);
+        scene.add(plane);
+    }
 
     var loader = new GLTFLoader();
 
@@ -47,7 +83,6 @@ function main() {
     var computer = loader.load(
         computer_model,
         function(gltf) {
-            console.log("WHY THIS NOT WORKING???");
             computer = gltf.scene;
 
             gltf.scene.scale.set(0.0075, 0.0075, 0.0075);
@@ -58,6 +93,14 @@ function main() {
             gltf.scenes; // Array<THREE.Group>
             gltf.cameras; // Array<THREE.Camera>
             gltf.asset; // Object
+
+            computer.traverse(function(node) {
+                node.castShadow = true;
+                node.receiveShadow = true;
+            });
+
+            computer.castShadow = true;
+            computer.receiveShadow = true;
 
         },
         // called while loading is progressing
@@ -74,7 +117,16 @@ function main() {
         }
     );
 
-    console.log(computer);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+    controls.dampingFactor = 0.05;
+    // Stop user from moving camera around.
+    // controls.enablePan = false;
+    controls.maxPolarAngle = Math.PI / 2;
+
+    controls.update();
+
+    var printed = false;
 
 
     function render(time) {
@@ -84,13 +136,17 @@ function main() {
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
 
-        cube.rotation.x = time;
-        cube.rotation.y = time;
-
         if (computer) {
             // computer.rotation.y = time;
             camera.lookAt(computer.position);
+            if (!printed) {
+                console.log(computer);
+                printed = true;
+            }
+
         }
+
+        controls.update();
 
         renderer.render(scene, camera);
 
