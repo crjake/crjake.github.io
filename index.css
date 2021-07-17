@@ -1,5 +1,5 @@
 * {
-    font-family: 'Cardo', serif;
+    font-family: 'Crimson Text', serif;
 }
 
 h1 {
@@ -12,4 +12,14 @@ test {
 
 body {
     background-color: #FFF1E0;
+}
+
+.portfolio {
+    background-color: #FFF9F5;
+}
+
+#render {
+    width: 750px;
+    height: 425px;
+    /* border: 1px solid black; */
 }
