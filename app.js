@@ -15,15 +15,15 @@ function main() {
     const canvas = document.querySelector('#render');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, });
 
-    // var container = document.getElementById('container');
-    // renderer.setSize($(container).width(), $(container).height());
-    // container.appendChild(renderer.domElement);
+    var container = document.getElementById('container');
+    renderer.setSize($(container).width(), $(container).height());
+    container.appendChild(renderer.domElement);
 
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
 
 
-    renderer.setPixelRatio(window.devicePixelRatio * 5);
+    renderer.setPixelRatio(window.devicePixelRatio);
     const fov = 75;
     // const aspect = 2;
     const aspect = window.innerWidth / window.innerHeight;

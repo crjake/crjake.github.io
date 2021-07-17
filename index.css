@@ -19,6 +19,11 @@ body {
     background-color: #FFF9F5;
 }
 
+.front {
+    z-index: 1;
+    position: relative;
+}
+
 #container {
     height: 90vh;
     width: 100%;
@@ -28,6 +33,7 @@ body {
 #render {
     display: block;
     position: absolute;
+    top: 0px;
     z-index: 0;
     width: 100%;
     height: 100%;
