@@ -5,6 +5,12 @@ import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threej
 import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 
+const canvas = document.getElementById("render");
+
+document.addEventListener("DOMContentLoaded", () => {
+    canvas.style.opacity = 1;
+});
+
 function main() {
     const canvas = document.querySelector('#render');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, });
@@ -17,7 +23,7 @@ function main() {
     renderer.shadowMapSoft = true;
 
 
-    renderer.setPixelRatio(window.devicePixelRatio * 3);
+    renderer.setPixelRatio(window.devicePixelRatio * 5);
     const fov = 75;
     // const aspect = 2;
     const aspect = window.innerWidth / window.innerHeight;
@@ -121,8 +127,9 @@ function main() {
     controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
     controls.dampingFactor = 0.05;
     // Stop user from moving camera around.
-    // controls.enablePan = false;
+    controls.enablePan = false;
     controls.maxPolarAngle = Math.PI / 2;
+    controls.target = new THREE.Vector3(0, 0.8, 0);
 
     controls.update();
 
@@ -138,7 +145,6 @@ function main() {
 
         if (computer) {
             // computer.rotation.y = time;
-            camera.lookAt(computer.position);
             if (!printed) {
                 console.log(computer);
                 printed = true;
