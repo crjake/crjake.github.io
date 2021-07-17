@@ -83,7 +83,7 @@ function main() {
 
     var loader = new GLTFLoader();
 
-    var computer_model = "retro_computer_with_mouse_and_keyboard/scene.gltf";
+    var computer_model = "models/retro_computer_with_mouse_and_keyboard/scene.gltf";
     var computer;
 
     var computer = loader.load(
