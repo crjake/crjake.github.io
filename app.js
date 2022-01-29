@@ -1,9 +1,14 @@
 // import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.130.1-bsY6rEPcA1ZYyZeKdbHd/mode=imports/optimized/three.js';
 
-import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
+// import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js';
+// import * as THREE from './js/three.js'
+import * as THREE from 'https://cdn.skypack.dev/three@0.136.0';
 
-import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
+// import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
+// import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
+
+import { OrbitControls } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/loaders/GLTFLoader.js';
 
 const canvas = document.getElementById("render");
 
